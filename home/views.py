@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from PIL import Image
-import os
-from django.conf import settings
+from .models import Files
 
 
 def home(request):
@@ -10,7 +8,6 @@ def home(request):
         return render(request, 'home.html')
     elif request.method == "POST":
         file = request.FILES.get('file')
-        img = Image.open(file)
-        path = os.path.join(settings.MEDIA_ROOT, file.name)
-        img = img.save(path)
+        img = Files(name="my_img", url=file)
+        img.save()
         return HttpResponseRedirect("/")
